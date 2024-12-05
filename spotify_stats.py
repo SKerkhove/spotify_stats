@@ -1,7 +1,7 @@
 import json
 from collections import Counter, defaultdict
 
-DEFAULT_FILE_NAME = "StreamingHistory0.json"
+DEFAULT_FILE_NAME = "StreamingHistory_podcast_2024.json"
 
 
 def countAmount(obj, key):
@@ -17,13 +17,16 @@ def countMSeconds(obj, key):
 
 
 if __name__ == '__main__':
+
     choice = input("Select stats:"
                    "\n\t(1) Top songs by no of plays"
                    "\n\t(2) Top songs by minutes listened"
                    "\n\t(3) Top artists by no of plays"
                    "\n\t(4) Top artists by minutes listened"
+                   "\n\t(5) Top podcast by number of episodes"
+                   "\n\t(6) Top podcast by minutes listened"
                    "\n\nType the number of your choice\n")
-    if choice not in ["1", "2", "3", "4"]:
+    if choice not in ["1", "2", "3", "4", "5", "6"]:
         print("No valid choice made, will use default choice (1)")
         choice = 1
     else:
@@ -50,6 +53,12 @@ if __name__ == '__main__':
         elif choice == 4:
             thing_to_count = "artistName"
             d = countMSeconds(json_obj, thing_to_count)
+        elif choice == 5:
+            thing_to_count = "podcastName"
+            d = countAmount(json_obj, thing_to_count)
+        elif choice == 6:
+            thing_to_count = "podcastName"
+            d = countMSeconds(json_obj, thing_to_count)
 
         # Probably not the best way but it works and fairly fast too
         sorted_list = sorted(d.items(),
@@ -73,8 +82,7 @@ if __name__ == '__main__':
     for key in sorted_dict.keys():
         if list_length != 0 and i > list_length:
             break
-
-        if choice in [1, 3]:
+        if choice in [1, 3, 5]:
             print(
                 str(i) + ") " + key + " (with " + str(
                     sorted_dict[key]) + " streams)")
